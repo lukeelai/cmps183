@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>CMPS183 Homework 2</title>
+
+<style>
+#welcome {
+        background-color: #0000DD;
+        border-radius: 5px;
+        height: 50px;
+}
+
+#welcomeText {
+        position: relative;
+        left: 10px;
+        top: 32%;
+        color: white;
+}
+
+.header {
+        font-size: 18px;
+
+}
+
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+div.container {
+    width: 100%;
+    border: 1px solid gray;
+}
+
+header, footer {
+    position:relative;
+    display:block;
+    max-width:100%;
+    height:100%;
+    margin:0 auto;
+    padding:1rem 5rem;
+    background:black;
+    color:#fff;
+    text-align: center;
+    list-style-type: none;
+}
+
+header h1{
+    line-height: 45px;
+    font-size: 2rem;
+    margin: 0;
+    display:inline;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 1em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+article {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1em;
+    overflow: hidden;
+}
+
+</style>
+</head>
+
+<body>
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="https://www.w3schools.com/howto/howto_js_sidenav.asp">Sidebar Tutorial</a>
+  <a href="https://www.w3schools.com/w3css/w3css_containers.asp">Container for header and footer</a>
+  <a href="https://www.w3schools.com/jsref/event_onclick.asp">Buttons</a>
+  <a href="https://www.w3schools.com/howto/howto_js_display_checkbox_text.asp">Checkboxes</a>
+  <a href="https://stackoverflow.com/questions/13299024/hiding-a-check-box-in-html">Hiding checkboxes</a>
+  <a href="https://www.w3schools.com/html/html5_webstorage.asp">Web Storage</a>
+</div>
+
+<div class="container">
+
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Sidebar</span>
+
+<header>
+   <h1>CMPS183: Homework 2</h1>
+</header>
+
+<nav>
+        <a href="index.html">Home</a>
+        <a href="todo.html">To Do List</a>
+        <a href="todoForm.html">To Do Form</a>
+</nav>
+
+<table id="tInput" cellpadding="10">
+    <tr>
+        <th class="header"><b>Completed</b></th>
+        <th class="header"><b>Task</b></th>
+        <th class="header"><b>Notes</b></th>
+        <th class="header"><b>Posted</b></th>
+        <th class="header"><b>Due Date</b></th>
+        <th class="sorter">
+            <select id="sort" name="sort">
+                <option>Posted Date</option>
+                <option>Last Updated</option>
+                <option>Due Date</option>
+            </select>
+        </th>
+        <th>
+            <select id="ascending-or-descending" name="ascending-or-descending">
+                <option>Ascending</option>
+                <option>Descending</option>
+            </select>
+        </th>
+        <th>
+            <select id="showing" name="showing">
+                <option>Show All</option>
+                <option>Show Completed</option>
+                <option>Show To Do</option>
+            </select>
+
+    </tr>
+    <tr>
+        <td class="checkboxes">
+            <input type="checkbox" id="cBoxes">
+        </td>
+        <td><input id="task" type="text" name="task"></form></td>
+        <td><input id="notes" type="text" name="notes"></form></td>
+        <td><text id="dateS" name="dateS" value = "toDate()"></form></td>
+        <td><input id="dateF" type="date" name="dateF" value="2018-02-19"></form></td>
+        <td><button id = "aRow" onclick="addRow(event)">Add</button></td>
+    </tr>
+</table>
+
+<table id="initTable" cellpadding="10"></table>
+
+<footer>
+  <li><a href="#">About Us</a></li>
+  <li><a href="#">Contact</a></li>
+  <li><a href="#">Privacy</a></li>
+  <li><a href="#">Credits</a></li>
+</footer>
+
+
+<script type="text/javascript">
+
+    var headers = ["Completed", "Task", "Notes", "Posted", "Due Date"];
+
+    var item = [];
+    var item1 = ["Dishes", "Do the dishes", "2018/02/15", "2018/02/19"];
+    var item2 = ["Homework", "Finish my homework", "2018/02/13", "2018/02/19"];
+    var item3 = ["Vaccum", "Vaccum the house", "2018/02/11", "2018/02/19"];
+    var item4 = ["Study", "Study for midterm next week", "2018/02/15", "2018/02/22"];
+
+    item.push(item1, item2, item3, item4);
+    localStorage["item"] = JSON.stringify(item);
+    console.log(localStorage["item"]);
+
+    var counter = 4;
+    var element1;
+    var element2;
+
+    var tasks = new nTask(item1[0], item1[1], item1[2], item1[3]);
+    initRow();
+
+    tasks = new nTask(item2[0], item2[1], item2[2], item2[3]);
+    initRow();
+
+    tasks = new nTask(item3[0], item3[1], item3[2], item3[3]);
+    initRow();
+
+    tasks = new nTask(item4[0], item4[1], item4[2], item4[3]);
+    initRow();
+
+
+
+    function nTask (task, notes, dateS, dateF) {
+        this.task = task;
+        this.notes = notes;
+        this.dateS = dateS;
+        this.dateF = dateF;
+    }
+
+    function initRow() {
+
+        var tble = document.getElementById("tInput");
+        var row = tble.insertRow(document.getElementById("tInput").rows.length);
+
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+        var cell6 = row.insertCell(5);
+        var cell7 = row.insertCell(6);
+        var cell8 = row.insertCell(7);
+
+        var checkbox = document.createElement('input');
+        checkbox.type = "checkbox";
+        checkbox.name = "name";
+        checkbox.value = "value";
+        checkbox.id = "id";
+        cell1.appendChild(checkbox);
+
+        var element1 = document.createElement('input');
+        element1.id = 'element1';
+        element1.type = "text";
+        element1.value = tasks.task;
+        cell2.appendChild(element1);
+        //cell1.innerHTML = newTask.task;
+
+        var element2 = document.createElement('input');
+        element2.id = 'element2';
+        element2.type = "text";
+        element2.value = tasks.notes;
+        cell3.appendChild(element2);
+        //cell2.innerHTML = newTask.notes;
+
+        cell4.innerHTML = toDate();
+        cell5.innerHTML = tasks.dateF;
+        cell6.innerHTML = "<button id='saveTask' onclick = 'saveTask(this)'>Save Task</button>"
+        cell7.innerHTML = "<button id='deleteRow' onclick = 'deleteR(this)'>Delete</button>"
+        cell8.innerHTML = "Last Updated:  " + toDate();
+
+        tDate();
+        if(tDate() != true){
+            event.preventDefault();
+        }
+    }
+
+    function addRow(event) {
+
+        var newTask = new nTask(document.getElementById("task").value, 
+                                document.getElementById("notes").value, 
+                                 document.getElementById("dateS").value, 
+                                 document.getElementById("dateF").value);
+
+        var tble = document.getElementById("tInput");
+        var row = tble.insertRow(document.getElementById("tInput").rows.length);
+
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+        var cell6 = row.insertCell(5);
+        var cell7 = row.insertCell(6);
+        var cell8 = row.insertCell(7);
+
+        var checkbox = document.createElement('input');
+        checkbox.type = "checkbox";
+        checkbox.name = "name";
+        checkbox.value = "value";
+        checkbox.id = "id";
+        cell1.appendChild(checkbox);
+
+        var element1 = document.createElement('input');
+        element1.id = 'element1';
+        element1.type = "text";
+        element1.value = newTask.task;
+        cell2.appendChild(element1);
+        //cell1.innerHTML = newTask.task;
+
+        var element2 = document.createElement('input');
+        element2.id = 'element2';
+        element2.type = "text";
+        element2.value = newTask.notes;
+        cell3.appendChild(element2);
+        //cell2.innerHTML = newTask.notes;
+
+        cell4.innerHTML = toDate();
+        cell5.innerHTML = newTask.dateF;
+        cell6.innerHTML = "<button id='saveTask' onclick = 'saveTask(this)'>Save Task</button>"
+        cell7.innerHTML = "<button id='deleteRow' onclick = 'deleteR(this)'>Delete</button>"
+        cell8.innerHTML = "Last Updated:  " + toDate();
+
+        var temp = [element1.value, element2.value, cell3.innerHTML, cell4.innerHTML];
+        item.push(temp);
+
+        localStorage.setItem("item" + counter, JSON.stringify(temp));
+
+        var storedItems = JSON.parse(localStorage.getItem("item"));
+        console.log(storedItems);
+
+        tDate();
+        if(tDate() != true){
+            event.preventDefault();
+        }
+
+        console.log(localStorage["item"]);
+        console.log(localStorage["item4"]);
+        counter++;
+
+    }
+
+    function appendToStorage(name, data){
+        var old = localStorage.getItem(name);
+        if(old === null) old = "";
+        localStorage.setItem(name, old + data);
+    }
+
+    function saveTask(r){
+        var tempE1, tempE2;
+
+        if (element1 != null) {
+            tempE2 = document.getElementById('element1').value;
+        }
+        else {
+            element1 = null;
+        }
+
+        if (element2 != null) {
+            tempE2 = document.getElementById('element2').value;
+        }
+        else {
+            element2 = null;
+        }
+
+        var temp = [tempE1, tempE2, toDate(), document.getElementById('dateF').value];
+        localStorage.setItem("item4", JSON.stringify(temp));
+
+        console.log(localStorage["item4"]);
+    }
+
+    function deleteR(r){
+        var i = r.parentNode.parentNode.rowIndex;
+        document.getElementById("tInput").deleteRow(i);
+        localStorage.removeItem(item[i + 2]);
+        console.log(localStorage["item"]);
+    }
+
+    function clearTable(){
+        localStorage.clear();
+        console.log(localStorage["item"]);
+    }
+
+    function toDate(){
+        var today = new Date();
+        var mm = today.getMonth() + 1;
+        var dd = today.getDate();
+        var yyyy = today.getFullYear();
+
+        if(dd<10){
+            dd='0'+dd;
+        } 
+        if(mm<10){
+            mm='0'+mm;
+        } 
+        var today = yyyy+'/'+mm+'/'+dd;
+        return today;
+    }
+
+    function tDate() {
+        var UserDate = document.getElementById("dateF").value;
+        var UsDate = parseDate(UserDate);
+        var uDate = UsDate.getTime();
+        var ToDate = Date.now();
+
+        if (uDate + 86399999 <= ToDate || uDate > 2528006400000) {
+            alert("Invalid date")
+            return false;
+        }
+        return true;
+    }
+
+    // parse a date in yyyy-mm-dd format
+    function parseDate(i) {
+        var parts = i.match(/(\d+)/g);
+        // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+        return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
+    }
+
+function mySort(opt, ascending) {
+  let item = JSON.parse(localStorage.getItem("item"));
+  if (!item) return;
+
+  opt = opt.toLowerCase();
+
+  // Sort items
+  let didChange = true; // hack
+  item.sort((a, b) => {
+    let aDate = "posted date" == opt ? a.posted
+      : "last updated" == opt ? a.lastUpdated
+        : "due date" == opt ? a.duedate : null;
+    let bDate = "posted date" == opt ? b.posted
+      : "last updated" == opt ? b.lastUpdated
+        : "due date" == opt ? b.duedate : null;
+    aDate = aDate.split("-"); bDate = bDate.split("-");
+
+    // Compare years
+    if (aDate[0] > bDate[0]) {
+      return 1;
+    } else if (aDate[0] < bDate[0]) {
+      return -1;
+    }
+
+    // Compare months
+    if (aDate[1] > bDate[1]) {
+      return 1;
+    } else if (aDate[1] < bDate[1]) {
+      return -1;
+    }
+
+    // Compare day
+    if (aDate[2] > bDate[2]) {
+      return 1;
+    } else if (aDate[2] < bDate[2]) {
+      return -1;
+    }
+
+    didChange = false;
+    // Date matches
+    return 0;
+  });
+
+  if ("descending" == ascending.toLowerCase() && didChange)
+    item.reverse();
+
+  localStorage.setItem("item", JSON.stringify(item));
+}
+
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+
+</script>   
+
+</body>
+</html>

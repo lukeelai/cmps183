@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+div.container {
+    width: 100%;
+    border: 1px solid gray;
+}
+
+header, footer {
+    position:relative;
+    display:block;
+    max-width:100%;
+    height:100%;
+    margin:0 auto;
+    padding:1rem 5rem;
+    background:black;
+    color:#fff;
+    text-align: center;
+    list-style-type: none;
+}
+
+header h1{
+    line-height: 45px;
+    font-size: 2rem;
+    margin: 0;
+    display:inline;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 1em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+article {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1em;
+    overflow: hidden;
+}
+</style>
+</head>
+<body>
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="https://www.w3schools.com/howto/howto_js_sidenav.asp">Sidebar Tutorial</a>
+  <a href="https://www.w3schools.com/w3css/w3css_containers.asp">Container for header and footer</a>
+  <a href="https://www.w3schools.com/jsref/event_onclick.asp">Buttons</a>
+  <a href="https://www.w3schools.com/howto/howto_js_display_checkbox_text.asp">Checkboxes</a>
+  <a href="https://stackoverflow.com/questions/13299024/hiding-a-check-box-in-html">Hiding checkboxes</a>
+</div>
+
+<div class="container">
+
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Sidebar</span>
+
+<header>
+   <h1>CMPS183: Homework 2</h1>
+</header>
+
+<nav>
+        <a href="index.html">Home</a>
+        <a href="todo.html">To Do List</a>
+        <a href="todoForm.html">To Do Form</a>
+</nav>
+
+<nav>
+  <ul>
+    <button onclick="showAll()">Show All</button>
+    <button onclick="showComp()">Show Completed</button>
+    <button onclick="showDo()">Show To Do</button>
+  </ul>
+</nav>
+
+<article>
+    <div id = "Dishes" style="display: none">
+        <input type="checkbox" id="dishes"> Dishes
+    </br>
+        <text>Start Date: </text>
+        <text id = "cDate">Start Date</text>
+        </br>
+        <input type="text" id="dishText" placeholder="notes" style="left: 100px;">
+        <input id="iDate" type="date" name="dates" placeholder="  MM/DD/YYY">
+        <button onclick="toDate()">Todays Date</button>
+        <button onclick="lastUpdated()">Last Updated</button>
+    </br>
+        <text>Last Updated</text>
+        <text id = "lUpdated"></text>
+        <button onclick="deleteE('Dishes')">Delete</button>
+    </br>
+    </div>
+
+    <div id = "Homework" style="display: none">
+        <input type="checkbox" id="homework"> Homework</br>
+        <input type="text" id="hwText" placeholder="notes" style="left: 100px;">
+        <input id="hwDate" type="date" name="hwdates" placeholder="  MM/DD/YYY">
+    </br>
+    </div>
+
+    <div id = "Vaccum" style="display: none">
+        <input type="checkbox" id="vaccum"> Vaccum</br>
+        <input type="text" id="vacText" placeholder="notes" style="left: 100px;">
+        <input id="vacDate" type="date" name="vacdates" placeholder="  MM/DD/YYY">
+    </br>
+    </div>
+
+    <div id = "Study" style="display: none">
+        <input type="checkbox" id="study"> Study</br>
+        <input type="text" id="studyText" placeholder="notes" style="left: 100px;">
+        <input id="studyDate" type="date" name="studydates" placeholder="  MM/DD/YYY">
+    </br>
+    </div>
+
+    <div id = "test">test</div>
+    <div id = "store">
+        <text id = "posted">Date</text>
+        <input type = "text" id = "storeText" placeholder="new task">
+        <button onclick="storeEle('storeText', 'posted')">submit</button>
+    </div>
+</article>
+
+<script>
+var items = ["Dishes", "Homework", "Vaccum", "Study"];
+var item;
+
+function storeEle(item_id, date_id) {
+    items.push(document.getElementById(item_id).value);
+    var posted = toDate(date_id);
+    item = document.getElementById("test").innerHTML;
+    localStorage.setItem("item", items);
+    for(var i = 0; i < items.length; i++){
+        item = localStorage.getItem("item");
+    }
+    console.log(item);
+}
+
+
+function showAll() {
+    document.getElementById("Dishes").style.display = "block";
+    document.getElementById("Homework").style.display = "block";
+    document.getElementById("Vaccum").style.display = "block";
+    document.getElementById("Study").style.display = "block";
+
+}
+
+function showComp() {
+    var x = document.getElementById("dishes");
+    var x1 = document.getElementById("Dishes");
+    if (x.checked) {
+        x1.style.display = "block";
+    } else {
+        x1.style.display = "none";
+    }
+
+    var y = document.getElementById("homework");
+    var y1 = document.getElementById("Homework");
+    if (y.checked) {
+        y1.style.display = "block";
+    } else {
+        y1.style.display = "none";
+    }
+
+    var z = document.getElementById("vaccum");
+    var z1 = document.getElementById("Vaccum");
+    if (z.checked) {
+        z1.style.display = "block";
+    } else {
+        z1.style.display = "none";
+    }
+
+    var a = document.getElementById("study");
+    var a1 = document.getElementById("Study");
+    if (a.checked) {
+        a1.style.display = "block";
+    } else {
+        a1.style.display = "none";
+    }
+}
+
+function showDo() {
+    var x = document.getElementById("dishes");
+    var x1 = document.getElementById("Dishes");
+    if (x.checked == false) {
+        x1.style.display = "block";
+    } else {
+        x1.style.display = "none";
+    }
+
+    var y = document.getElementById("homework");
+    var y1 = document.getElementById("Homework");
+    if (y.checked == false) {
+        y1.style.display = "block";
+    } else {
+        y1.style.display = "none";
+    }
+
+    var z = document.getElementById("vaccum");
+    var z1 = document.getElementById("Vaccum");
+    if (z.checked == false) {
+        z1.style.display = "block";
+    } else {
+        z1.style.display = "none";
+    }
+
+    var a = document.getElementById("study");
+    var a1 = document.getElementById("Study");
+    if (a.checked == false  ) {
+        a1.style.display = "block";
+    } else {
+        a1.style.display = "none";
+    }
+}
+
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+
+function toDate(item_id){
+    var today = new Date();
+    var mm = today.getMonth() + 1;
+    var dd = today.getDate();
+    var yyyy = today.getFullYear();
+
+    if(dd<10){
+        dd='0'+dd;
+    } 
+    if(mm<10){
+        mm='0'+mm;
+    } 
+    var today = mm+'/'+dd+'/'+yyyy;
+    document.getElementById(item_id).innerHTML = today;
+    console.log(today);
+}
+
+function lastUpdated() {
+    var x = document.lastModified;
+    document.getElementById("lUpdated").innerHTML = x;
+}
+
+function deleteE(elementID){
+    var element = document.getElementById(elementID);
+    element.remove();
+}
+
+// if (typeof(Storage) !== "undefined") {
+//     // Store
+//     localStorage.setItem("lastname", "Smith");
+//     // Retrieve
+//     document.getElementById("test").innerHTML = localStorage.getItem("lastname");
+// } else {
+//     document.getElementById("test").innerHTML = "Sorry, your browser does not support Web Storage...";
+// }
+
+function appendC(elementID, element) {
+    var para = document.createElement(elementID);
+    var t = document.createTextNode(element);
+    para.appendChild(t);
+    document.getElementById("test").appendChild(para);
+}
+
+
+</script>
+
+<footer>
+  <li><a href="#">About Us</a></li>
+  <li><a href="#">Contact</a></li>
+  <li><a href="#">Privacy</a></li>
+  <li><a href="#">Credits</a></li>
+</footer>
+
+</div>
+
+</body>
+</html>

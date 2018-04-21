@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+div.container {
+    width: 100%;
+    border: 1px solid gray;
+}
+
+header, footer {
+    position:relative;
+    display:block;
+    max-width:100%;
+    height:100%;
+    margin:0 auto;
+    padding:1rem 5rem;
+    background:black;
+    color:#fff;
+    text-align: center;
+    list-style-type: none;
+}
+
+footer li{
+  list-style: none;
+}
+
+aside{
+	float: right;
+	max-width: 160px;
+	width: 150px;
+	height: 150px;
+	margin: 0;
+	padding: 1em;
+	font-size: 14px;
+}
+
+article {
+  margin-left: 170px;
+  border-left: 1px solid gray;
+  padding: 1em;
+  overflow: hidden;  
+}
+
+</style>
+</head>
+<body>
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="https://www.w3schools.com/howto/howto_js_sidenav.asp">Sidebar Tutorial</a>
+  <a href="https://www.w3schools.com/w3css/w3css_containers.asp">Container for header and footer</a>
+  <a href="https://stackoverflow.com/questions/7755088/what-does-href-expression-a-href-javascript-a-do">a href guide</a>
+</div>
+
+<div class="container">
+
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Sidebar</span>
+
+<header>
+   <h1>CMPS183: Homework 3</h1>
+</header>
+
+<nav>
+        <a href="/index">Home</a>
+        <a href="/todo">To Do List</a>
+        <a href="/edit/1">To Do Form</a>
+</nav>
+
+<aside>
+	<img src = "http://www.marismith.com/wp-content/uploads/2014/07/facebook-profile-blank-face.jpeg" alt="John Doe" style="width: 150px; height: 150px;">
+	<h3>Santa Cruz, California</h3>
+	<h3>Febuary 29th, 1996</h3>
+	<h3>(123) - 456 - 7890</h3>
+	<h3>john@doe.com</h3>
+</aside>
+
+<article>
+  <h1>John Doe</h1>
+  <p>I am a currently a 4th year at UCSC pursuing a Bachelor's in Computer Science.</p>
+  <p></p>
+
+  <h2>Winter 2018 Courses</h2>
+  <h3>CMPS183</h3>
+  <h4>Web Applications</h4>
+  <p>The World-Wde Web is one of the main mechanisms by which computer applications are delivered to users. This course introduces the design of Web applications. Students learn the main technologies involved, and build web applications as part of homework assignments and group class projects. (Formerly Hypermedia and the Web.) Prerequisite(s): courses 12B and 12M. (General Education Code(s): PR-E (Practice: Collaborative Endeavor))</p>
+  <p>5 Credits</p>
+
+  <h3>CMPS180</h3>
+  <h4>Database Systems I</h4>
+  <p>Introduction to the concepts, approaches, tools, and methodology of database design. Covers the entity-relationship model, the relational model, relational algebra, relational calculus, commercial languages (such as SQL and QBE), functional dependencies, normal forms, and design theory. Other topics may include knowledge-bases, constraint databases, and alternative database models. Prerequisite(s): course 101.</p>
+  <p>5 Credits</p>
+
+  <h3>LIT80Y</h3>
+  <h4>Harry Potter</h4>
+  <p>From The Sorcerer's Stone to The Deathly Hallows, this course approaches the Harry Potter books and films from a variety of critical angles, using the analytical tools of literary and cultural studies to shed new light on this dizzying phenomenon. (General Education Code(s): TA.)</p>
+</article>
+
+<footer>
+	<li><a href="#">About Us</a></li>
+  <li><a href="#">Contact</a></li>
+  <li><a href="#">Privacy</a></li>
+  <li><a href="#">Credits</a></li>
+</footer>
+
+</div>
+
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+
+</body>
+</html>

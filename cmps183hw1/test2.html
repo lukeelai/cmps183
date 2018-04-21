@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>CMPS183 Homework 2</title>
+
+<style>
+#welcome {
+        background-color: #0000DD;
+        border-radius: 5px;
+        height: 50px;
+}
+
+#welcomeText {
+        position: relative;
+        left: 10px;
+        top: 32%;
+        color: white;
+}
+
+.header {
+        font-size: 18px;
+
+}
+
+</style>
+
+<script type="text/javascript">
+
+    var item = [];
+    var item1 = ["Dishes", "Do the dishes", "2018/02/15", "2018/02/19"];
+    var item2 = ["Homework", "Finish my homework", "2018/02/13", "2018/02/19"];
+    var item3 = ["Vaccum", "Vaccum the house", "2018/02/11", "2018/02/19"];
+    var item4 = ["Study", "Study for midterm next week", "2018/02/15", "2018/02/22"];
+
+    item.push(item1, item2, item3, item4);
+    localStorage["item"] = JSON.stringify(item);
+    console.log(localStorage["item"]);
+
+    var counter = 3;
+
+    function nTask (task, notes, dateS, dateF) {
+        this.task = task;
+        this.notes = notes;
+        this.dateS = dateS;
+        this.dateF = dateF;
+    }
+
+    function addRow(event) {
+
+        var newTask = new nTask(document.getElementById("task").value, 
+                                document.getElementById("notes").value, 
+                                 document.getElementById("dateS").value, 
+                                 document.getElementById("dateF").value);
+
+        var tble = document.getElementById("tInput");
+        var row = tble.insertRow(document.getElementById("tInput").rows.length);
+
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+        //var cell6 = row.insertCell(5);
+        var cell6 = row.insertCell(5);
+        var cell7 = row.insertCell(6);
+
+        var element1 = document.createElement('input');
+        element1.type = "text";
+        element1.value = newTask.task;
+        cell1.appendChild(element1);
+        //cell1.innerHTML = newTask.task;
+
+        var element2 = document.createElement('input');
+        element2.type = "text";
+        element2.value = newTask.notes;
+        cell2.appendChild(element2);
+        //cell2.innerHTML = newTask.notes;
+
+        cell3.innerHTML = toDate();
+        cell4.innerHTML = newTask.dateF;
+        cell5.innerHTML = "<button id='saveTask' onclick = 'saveTask(this)'>Save Task</button>"
+        cell6.innerHTML = "<button id='deleteRow' onclick = 'deleteR(this)'>Delete</button>"
+        cell7.innerHTML = "Last Updated:  " + toDate();
+
+        var temp = [element1.value, element2.value, cell3.innerHTML, cell4.innerHTML];
+        item.push(temp);
+
+        localStorage.setItem("item", JSON.stringify(temp));
+
+        var storedItems = JSON.parse(localStorage.getItem("item"));
+        console.log(storedItems);
+        console.log(item);
+
+        tDate();
+        if(tDate() != true){
+            event.preventDefault();
+        }
+
+        console.log(localStorage["item"]);
+        counter++;
+
+    }
+
+    function appendToStorage(name, data){
+        var old = localStorage.getItem(name);
+        if(old === null) old = "";
+        localStorage.setItem(name, old + data);
+    }
+
+    function saveTask(r){
+        localStorage["item[counter]"] = [document.getElementById("task").value, document.getElementById("notes").value, toDate(), document.getElementById('dateF').value];
+
+        console.log(item[counter]);
+    }
+
+    function deleteR(r){
+        var i = r.parentNode.parentNode.rowIndex;
+        document.getElementById("tInput").deleteRow(i);
+        localStorage.removeItem(item[i + 2]);
+        console.log(localStorage["item"]);
+    }
+
+    function clearTable(){
+        localStorage.clear();
+        console.log(localStorage["item"]);
+    }
+
+    function toDate(){
+        var today = new Date();
+        var mm = today.getMonth() + 1;
+        var dd = today.getDate();
+        var yyyy = today.getFullYear();
+
+        if(dd<10){
+            dd='0'+dd;
+        } 
+        if(mm<10){
+            mm='0'+mm;
+        } 
+        var today = yyyy+'/'+mm+'/'+dd;
+        return today;
+    }
+
+    function tDate() {
+        var UserDate = document.getElementById("dateF").value;
+        var UsDate = parseDate(UserDate);
+        var uDate = UsDate.getTime();
+        var ToDate = Date.now();
+
+        if (uDate + 86399999 <= ToDate || uDate > 2528006400000) {
+            alert("Invalid date")
+            return false;
+        }
+        return true;
+    }
+
+    // parse a date in yyyy-mm-dd format
+    function parseDate(i) {
+        var parts = i.match(/(\d+)/g);
+        // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+        return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
+    }
+
+</script>       
+</head>
+
+<body>
+
+<h1>CMPS183 Homework 2</h1>
+
+<table id="tInput" cellpadding="10">
+    <tr>
+        <th class="header"><b>Task</b></th>
+        <th class="header"><b>Notes</b></th>
+        <th class="header"><b>Posted</b></th>
+        <th class="header"><b>Due Date</b></th>
+    </tr>
+    <tr>
+        <td><input id="task" type="text" name="task"></form></td>
+        <td><input id="notes" type="text" name="notes"></form></td>
+        <td><text id="dateS" name="dateS" value = "toDate()"></form></td>
+        <td><input id="dateF" type="date" name="dateF" value="2018-02-19"></form></td>
+        <td><button id = "aRow" onclick="addRow(event)">Add</button></td>
+        <td><button id = "cTable" onclick="clearTable()">Clear</button></td>
+    </tr>
+</table>
+</body>
+</html>
